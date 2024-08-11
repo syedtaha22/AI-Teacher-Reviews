@@ -170,7 +170,7 @@ const LandingPage = () => {
           <Box sx={{ mt: 2 }}>
             <Button
               variant="contained"
-              onClick={handleWaitlist()}
+              onClick={handleWaitlist}
               sx={{
                 borderRadius: '50px',
                 backgroundColor: themeColors.primary, // Background color for button
