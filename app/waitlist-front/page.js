@@ -150,14 +150,15 @@ const WaitlistPage = () => {
             value={userType}
             onChange={handleTabChange}
             variant="fullWidth"
-            textColor="primary"
+
+
             sx={{
               '& .MuiTabs-indicator': {
                 backgroundColor: 'maroon', // Maroon color for the tab indicator.
               },
               '& .MuiTab-root': {
                 textTransform: 'none',
-                color: 'white', // White text color for tabs.
+                color: '#000000', // White text color for tabs.
                 '&.Mui-selected': {
                   color: 'maroon', // Maroon color for the selected tab.
                 },

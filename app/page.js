@@ -1,14 +1,18 @@
 'use client';
 
-import WaitlistPage from './waitlist-front/page';
-
+import LandingPage from './landing/page';
+import Waitlist from './waitlist-front/page';
 import { usePathname } from 'next/navigation';
 
 const Page = () => {
     const pathname = usePathname();
 
-    return <WaitlistPage />;
+    if (pathname === '/waitlist-front') {
+        return <Waitlist />;
+    }
+
+
+    return <LandingPage />;
 };
 
 export default Page;
-

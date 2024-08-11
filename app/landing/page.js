@@ -4,6 +4,7 @@
 import { Box, Button, Typography, Link } from '@mui/material';
 import Image from 'next/image';
 import { useMediaQuery } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 // Define a theme color palette for consistent styling
 const themeColors = {
@@ -15,9 +16,15 @@ const themeColors = {
 };
 
 // Main Page component
-export default function Page() {
+const LandingPage = () => {
   // Use media query to determine if the viewport width is 600px or less (mobile devices)
   const isMobile = useMediaQuery('(max-width:600px)');
+  const router = useRouter()
+
+  const handleWaitlist = () => {
+    router.push('/waitlist-front');
+  };
+
 
   return (
     <Box
@@ -102,18 +109,6 @@ export default function Page() {
           >
             About
           </Link>
-          <Link
-            href="#"
-            sx={{
-              textDecoration: 'none', // Remove underline from link
-              color: themeColors.foreground, // Set text color
-              fontFamily: 'Manrope, sans-serif', // Font family for text
-              fontWeight: 500, // Font weight for navigation links
-              fontSize: '0.875rem', // Font size for navigation links
-            }}
-          >
-            Contact
-          </Link>
         </Box>
       </Box>
       {/* Main content section */}
@@ -175,6 +170,7 @@ export default function Page() {
           <Box sx={{ mt: 2 }}>
             <Button
               variant="contained"
+              onClick={handleWaitlist()}
               sx={{
                 borderRadius: '50px',
                 backgroundColor: themeColors.primary, // Background color for button
@@ -196,3 +192,5 @@ export default function Page() {
     </Box>
   );
 }
+
+export default LandingPage;
