@@ -25,7 +25,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { doc, setDoc, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
 import { firestore } from '@/firebase';
-import {useRouter} from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 // list of all teachers
 const teachersList = ["Abdul Basit",
@@ -330,46 +330,56 @@ const WaitlistPage = () => {
   // Function to validate the review entries.
   // Ensures at least three reviews are provided, all fields are filled, and no duplicate teachers.
   // Function to validate the form entries.
-const validateForm = () => {
-  if (!email) {
-    setError('Please provide a valid email address.');
-    return false;
-  }
-
-  // Ensure the email is a Gmail address
-  const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-  if (!gmailRegex.test(email)) {
-    setError('Please provide a Gmail address.');
-    return false;
-  }
-
-  // Additional validation only for IBA Students (userType === 0)
-  if (userType === 0) {
-    // Filter reviews with both teacher and review fields filled
-    const uniqueReviews = Array.from(
-      new Set(
-        reviews
-          .filter((review) => review.teacher && review.review)
-          .map((review) => review.teacher)
-      )
-    );
-
-    // Ensure there are at least 3 unique reviews
-    if (uniqueReviews.length < 3) {
-      setError('Please provide unique reviews for at least 3 different teachers.');
+  // Function to validate the form entries.
+  const validateForm = () => {
+    if (!email) {
+      setError('Please provide a valid email address.');
       return false;
     }
-  }
 
-  // Clear any previous errors
-  setError('');
-  return true;
-};
+    // Ensure the email is a Gmail address
+    const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    if (!gmailRegex.test(email)) {
+      setError('Please provide a Gmail address.');
+      return false;
+    }
+
+    // Additional validation only for IBA Students (userType === 0)
+    if (userType === 0) {
+      // Check if any review field is empty
+      for (let i = 0; i < reviews.length; i++) {
+        const review = reviews[i];
+        if (!review.teacher || !review.review) {
+          setError(`Please fill in all fields for review ${i + 1}.`);
+          return false;
+        }
+      }
+
+      // Filter reviews with both teacher and review fields filled
+      const uniqueReviews = Array.from(
+        new Set(
+          reviews
+            .filter((review) => review.teacher && review.review)
+            .map((review) => review.teacher)
+        )
+      );
+
+      // Ensure there are at least 3 unique reviews
+      if (uniqueReviews.length < 3) {
+        setError('Please provide unique reviews for at least 3 different teachers.');
+        return false;
+      }
+    }
+
+    // Clear any previous errors
+    setError('');
+    return true;
+  };
 
   // Handler function for form submission.
   const handleSubmit = async () => {
     if (!validateForm()) return;
-  
+
     try {
       // Determine the Firestore document reference based on the user type
       let documentRef;
@@ -378,31 +388,31 @@ const validateForm = () => {
       } else if (userType === 2) {
         documentRef = doc(firestore, 'waitlist', 'non-iba');
       }
-  
+
       // Save the email to the appropriate document
       if (userType !== 0) {
-        await setDoc(documentRef, 
-          { 
+        await setDoc(documentRef,
+          {
             emails: arrayUnion(email)
-          }, 
+          },
           { merge: true }
         );
       } else if (userType === 0) {
         // Save email and teacher reviews for IBA students
-        await setDoc(documentRef, 
-          { 
+        await setDoc(documentRef,
+          {
             emails: arrayUnion(email)
-          }, 
+          },
           { merge: true }
         );
-  
+
         // Save teacher reviews
         for (let review of reviews) {
           const teacherId = review.teacher.replace(/[.\s]/g, '').toLowerCase();
           const teacherRef = doc(firestore, 'teachers', teacherId);
-  
+
           const teacherDoc = await getDoc(teacherRef);
-  
+
           if (teacherDoc.exists()) {
             await updateDoc(teacherRef, {
               reviews: arrayUnion(review.review)
@@ -414,16 +424,16 @@ const validateForm = () => {
           }
         }
       }
-  
+
       console.log('Feedback submitted successfully!');
     } catch (error) {
       console.error('Error submitting feedback:', error);
       setError('Failed to submit feedback. Please try again later.');
     }
-  
+
     router.push('/post-submission');
   };
-  
+
 
 
 
@@ -493,7 +503,19 @@ const validateForm = () => {
                     fullWidth
                     value={email}
                     onChange={(e) => setEmail(e.target.value)} // Update email state on input change.
-                    sx={{ marginBottom: 2 }}
+                    sx={{
+                      marginBottom: 2,
+                      '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'maroon', // Maroon border color on hover.
+                      },
+                      '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'maroon', // Maroon border color when focused.
+                      },
+                      '& .MuiInputLabel-root.Mui-focused': {
+                        color: 'maroon', // Maroon color for the label when focused.
+                      },
+
+                    }}
                   />
                   <Typography
                     variant="h5"
@@ -656,7 +678,19 @@ const validateForm = () => {
                     fullWidth
                     value={email}
                     onChange={(e) => setEmail(e.target.value)} // Update email state on input change.
-                    sx={{ marginBottom: 2 }}
+                    sx={{
+                      marginBottom: 2,
+                      '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'maroon', // Maroon border color on hover.
+                      },
+                      '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'maroon', // Maroon border color when focused.
+                      },
+                      '& .MuiInputLabel-root.Mui-focused': {
+                        color: 'maroon', // Maroon color for the label when focused.
+                      },
+
+                    }}
                   />
                   <Typography variant="h6" sx={{ marginBottom: 2 }}>
                     Welcome to IBA!
@@ -679,6 +713,17 @@ const validateForm = () => {
                     <ListItem sx={{ display: 'list-item', }}> Make informed decisions about your course selections</ListItem>
                     <ListItem sx={{ display: 'list-item', }}> Contribute your own experiences to help future students</ListItem>
                   </List>
+
+                  {/* Error messages */}
+                  {error && (
+                    <Grid item xs={12} container justifyContent="center" textAlign="center" marginBottom={2}>
+                      <Typography variant="body1" color="error">
+                        {error}
+                      </Typography>
+                    </Grid>
+                  )}
+
+
                   {/* Submit button */}
                   <Submit onClick={handleSubmit} />
                 </CardContent>
@@ -699,7 +744,19 @@ const validateForm = () => {
                     fullWidth
                     value={email}
                     onChange={(e) => setEmail(e.target.value)} // Update email state on input change.
-                    sx={{ marginBottom: 2 }}
+                    sx={{
+                      marginBottom: 2,
+                      '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'maroon', // Maroon border color on hover.
+                      },
+                      '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'maroon', // Maroon border color when focused.
+                      },
+                      '& .MuiInputLabel-root.Mui-focused': {
+                        color: 'maroon', // Maroon color for the label when focused.
+                      },
+
+                    }}
                   />
                   <Typography variant="h6" sx={{ marginBottom: 2 }}>
                     About Our Expansion
@@ -707,6 +764,17 @@ const validateForm = () => {
                   <Typography variant="body1" sx={{ marginBottom: 2 }}>
                     We are excited to announce that we are planning to expand our platform to other universities soon. Stay tuned and join our waitlist to be notified when we launch in your university.
                   </Typography>
+
+                  {/* Error messages */}
+                  {error && (
+                    <Grid item xs={12} container justifyContent="center" textAlign="center" marginBottom={2}>
+                      <Typography variant="body1" color="error">
+                        {error}
+                      </Typography>
+                    </Grid>
+                  )}
+
+
                   {/* Submit button */}
                   <Submit onClick={handleSubmit} />
                 </CardContent>

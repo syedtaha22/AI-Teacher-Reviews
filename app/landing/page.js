@@ -22,7 +22,7 @@ const LandingPage = () => {
   const router = useRouter()
 
   const handleWaitlist = () => {
-    router.push('/waitlist-front');
+    router.push('/waitlist');
   };
 
   const handleAbout = () => {
@@ -61,7 +61,7 @@ const LandingPage = () => {
           priority // Load image with high priority
           style={{
             filter: 'blur(10px)',
-            transform: 'scale(1.05)' // Slightly increase the image size to prevent vignette
+            transform: 'scale(2.05)' // Slightly increase the image size to prevent vignette
 
           }} // Apply blur effect to the image
         />
@@ -152,7 +152,7 @@ const LandingPage = () => {
               lineHeight: 1.2, // Line height for heading
             }}
           >
-            Discover the Best IBA Teachers with AI - Powered Reviews
+            Discover the Best IBA Teachers with AI-Powered Reviews
           </Typography >
           {/* Subheading */}
           < Typography
@@ -164,7 +164,7 @@ const LandingPage = () => {
               mt: 2, // Margin-top for spacing
             }}
           >
-            Our AI - driven platform provides personalized teacher recommendations and in -depth reviews to help
+            Our AI-driven platform provides personalized teacher recommendations and in-depth reviews to help
             IBA students find the perfect educator.
           </Typography >
           {/* Button */}

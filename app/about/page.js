@@ -42,7 +42,7 @@ const AboutPage = () => {
         }}
       >
         <Image
-          src="/iba6.jpg" // Path to your custom background image
+          src="/bg.jpg" // Path to your custom background image
           alt="Background"
           layout="fill" // Make the image fill the container
           objectFit="cover" // Ensure the image covers the container without distortion
@@ -50,7 +50,7 @@ const AboutPage = () => {
           priority // Load image with high priority
           style={{
             filter: 'blur(10px)',
-            transform: 'scale(1.05)' // Slightly increase the image size to prevent vignette
+            transform: 'scale(2.05)' // Slightly increase the image size to prevent vignette
 
           }} // Apply blur effect to the image
         />
