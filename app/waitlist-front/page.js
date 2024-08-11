@@ -560,7 +560,7 @@ const validateForm = () => {
                           >
                             <Autocomplete
                               options={teachersList} // Dynamically populated options
-                              value={review.teacher || ''} // Ensure it works even if the teacher is not yet selected
+                              value={review.teacher || null} // Ensure it works even if the teacher is not yet selected
                               onChange={(e, newValue) => handleReviewChange(index, 'teacher', newValue)}
                               renderInput={(params) => (
                                 <TextField
