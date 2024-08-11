@@ -301,6 +301,7 @@ const WaitlistPage = () => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       marginTop: 2,
+                      marginBottom: 1
                     }}
                   >
                     <IconButton onClick={addReviewBox} sx={{ marginRight: 1 }}>
