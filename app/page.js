@@ -1,10 +1,9 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
 
-export default function Home() {
-  return (
-    <main className={styles.main}>
-      Hello World
-    </main>
-  );
+import WaitlistPage from "./waitlist/page";
+
+const Page = () => {
+  return <WaitlistPage />
 }
+
+export default Page;
