@@ -48,6 +48,11 @@ export default function Page() {
           objectFit="cover" // Ensure the image covers the container without distortion
           quality={100} // Use highest quality
           priority // Load image with high priority
+          style={{
+            filter: 'blur(10px)',
+            transform: 'scale(1.05)' // Slightly increase the image size to prevent vignette
+
+          }} // Apply blur effect to the image
         />
       </Box>
       {/* Header section */}
@@ -171,6 +176,7 @@ export default function Page() {
             <Button
               variant="contained"
               sx={{
+                borderRadius: '50px',
                 backgroundColor: themeColors.primary, // Background color for button
                 color: themeColors.primaryForeground, // Text color for button
                 '&:hover': {
