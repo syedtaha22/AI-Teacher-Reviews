@@ -18,11 +18,257 @@ import {
   Tab,
   Grid,
   List,
-  ListItem
+  ListItem,
+  Autocomplete
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import Image from 'next/image';
+import { doc, setDoc, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
+import { firestore } from '@/firebase';
+import {useRouter} from 'next/navigation';
+
+// list of all teachers
+const teachersList = ["Abdul Basit",
+  "Abdullah M Yousuf",
+  "Aadil Nakhoda",
+  "Abdul Basit Shaikh",
+  "Abdul Kaium Masud",
+  "Abdul Majid",
+  "Abdul Wahab Suri",
+  "Adnan Haider",
+  "Ahmad Azhar",
+  "Aitzaz Ahsan",
+  "Ali Gibran Siddiqui",
+  "Amana Raquib",
+  "Amer Awan",
+  "Amer Iqbal Awan",
+  "Amir Bashir",
+  "Amir Hamza",
+  "Amir Jehan Khan",
+  "Arslan Waheed",
+  "Asad Bilal",
+  "Ashar Saleem",
+  "Asim Shabir",
+  "Ateeb Akhtar",
+  "Azam Ali",
+  "Azeem Hassan",
+  "Azima Khan",
+  "Babar Ahmed Qureshi",
+  "Bilal Munshi",
+  "Danish Ali",
+  "Danish Iqbal Godil",
+  "Engr Irfan Nabi",
+  "Faisal Nazir",
+  "Faisla Iradat",
+  "Faiz ur Rehman",
+  "Farah Naz Baig",
+  "Farah Yasmeen",
+  "Faraz Hyder",
+  "Hafsa Ather Jafri",
+  "Hassan Mahmood",
+  "Hatim Fassi",
+  "Heman Das Lohano",
+  "Hisham Bin Zubair",
+  "Huma Amir",
+  "Huma Sodher",
+  "Humera Naz",
+  "Ilfan Oh",
+  "Imran Khan",
+  "Imran Rauf",
+  "Irum Saba",
+  "Ismat Abbas",
+  "Jaffar Ahmed",
+  "Javed Iqbal",
+  "Jawwad Farid",
+  "Junaid Alam",
+  "Junaid Memon",
+  "Khadija Bari",
+  "Laila Farooq",
+  "Lubna Naz",
+  "Mohsin Patel",
+  "Mohsin Sadaqat",
+  "Mohsin Zahid Khawaja",
+  "Moiz Hasan",
+  "Moiz Khan",
+  "Mudassir Uddin",
+  "Muhammad Ayaz",
+  "Muhammad Imtiaz",
+  "Muhammad Nasir",
+  "Muhammad Shafique",
+  "Muhammad Sheraz",
+  "Muhammad Yousuf Tufail",
+  "Mujeeb u Rehman Bhayo",
+  "Nadya Chishty Mujahid",
+  "Nadya Qamar Chishty",
+  "Nasir Afghan",
+  "Nasir Touheed",
+  "Nauman J Amin",
+  "Nausheen Anwar",
+  "Nausheen Wasi",
+  "Naveed Ahmad",
+  "Nazish Kanwal",
+  "Nida Aslam Khan",
+  "Noureen Khan",
+  "Qazi Masood",
+  "Sahar Arshad",
+  "Sahar Awan",
+  "Saima Saif",
+  "Sajjad Ahmed",
+  "Sajjad Haider",
+  "Salman Khalid",
+  "Salman Zaffar",
+  "Sami Siddiqui",
+  "Saqib Sharif",
+  "Saqib ur Rehman",
+  "Sara Khan",
+  "Shabana Nisar",
+  "Shahid Ashraf",
+  "Shahid Hussain",
+  "Shahid Mir",
+  "Shahid Qureshi",
+  "Shahid Zaki",
+  "Shameel Khan",
+  "Sharjeel Hasnie",
+  "Shoaib Jamal",
+  "Shumaila",
+  "Syed Ali raza",
+  "Syed Ali Raza Naqvi",
+  "Syed Asim Ali",
+  "Syed Inayat Ullah",
+  "Syed Tauqeer Ahmed Hashmi",
+  "Tahir Syed",
+  "Tarik Yildirim",
+  "Tariq Mahmood",
+  "Tehzeeb Amir",
+  "Ubedullah Khoso",
+  "Umar Shahzad",
+  "Usama Ehsan",
+  "Usman Nazir",
+  "Wajid Rizvi",
+  "Wali Ullah",
+  "Yasir Kundi",
+  "Zaheer Ali",
+  "Zeeshan Atiq",
+  "Zeeshan Ullah",
+  "Zulfiqar",
+  "Francisco Merello",
+  "Graduate Department",
+  "Kashif Rashid",
+  "Leroy Johns",
+  "Mansoora Amini",
+  "Abdul Hafeez",
+  "Abu Tahir Siddique",
+  "Abu Tahir Siddiqui",
+  "Adnan Ahmad",
+  "Ahmed Akhtar",
+  "Ahmed Raza",
+  "Ali Asghar Khurshid",
+  "Ali Bolani",
+  "Amir Khan",
+  "Ammar Habib",
+  "Aniq Hashmi",
+  "Arif Irfanullah",
+  "Asad Sajid",
+  "Ayaz Shaikh",
+  "Azfer Naseem",
+  "Babur Khan Suri",
+  "Behraj Khan",
+  "Bilal Hayat But",
+  "Ehsan Badar",
+  "Farhan A Siddiqui",
+  "Farhan Shaukat",
+  "Farhan ul Haq Usmani",
+  "Faseeh Ahmed",
+  "Furqan Essani",
+  "Ghias ul Hassan Khan",
+  "Haroon Tabraze",
+  "Hassaan Khalid",
+  "Ijaz Ali",
+  "Imran Javed",
+  "Imran Shaheen",
+  "Irfan Khan",
+  "Irfan Muhammad",
+  "Jafar Raza Rizvi",
+  "Kamil Shahbazker",
+  "Kamil Yousuf",
+  "Khusrow Uzair",
+  "Leon Menezes",
+  "M Abdullah Yousuf",
+  "M Zain Uddin",
+  "Maqsood Alam",
+  "Mohammad Sohaib Saleem",
+  "Muhammad Naeem",
+  "Muhammad Najam Uddin",
+  "Muhammad Shahid Waheed",
+  "Muhammad Umer Saeed",
+  "Muzamil Patel",
+  "Muzammil Patel",
+  "Najmul Hassan",
+  "Naveed Haider Bukhari",
+  "Naveed Rabbani",
+  "Rahat Aziz",
+  "Rao M Noman",
+  "Saad Usman",
+  "Saher Iqbal",
+  "Samar Jamil",
+  "Saqib Ahmed",
+  "Shahzad Ahmed",
+  "Shahzeb Ahmed Hashim",
+  "Sheikh Muhammad Irfan",
+  "Syed Muhammad Ali Bukhari",
+  "Ubaid-ur-Rehman",
+  "Usman Ali",
+  "Vishal Khemani",
+  "Waseem Arain",
+  "Yousuf Saudagar",
+  "Zeeshan Bhayani",
+  "Zenab Tariq",
+  "Zohaib Aziz",
+  "Zulfiqar Khan",
+  "Palwashay Sethi",
+  "Sobia Akber",
+  "Muhammad Asif Jaffer",
+  "Muniba Abdullah",
+  "Nadeem Akhtar",
+  "Akhter Raza Syed",
+  "Syed Ahsan Kamal",
+  "Syed Akbar Ali",
+  "Syed Ali Ahmed",
+  "Syed Atif Murtaza Qaiser",
+  "Syed Farid Iqbal",
+  "Syed Irfan Ahmed",
+  "Syed Mujahid Ali",
+  "Syed Shujaat Hussain",
+  "Tehsen Mazhar Valjee"];
+
+// Component for the submit button with custom styling.
+const Submit = ({ onClick }) => {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Button
+        variant="contained"
+        sx={{
+          backgroundColor: '#800000', // Maroon background color.
+          color: '#ffffff', // White text color.
+          textTransform: 'none',
+          '&:hover': {
+            backgroundColor: '#ffffff', // Inverted background color on hover.
+            color: '#800000', // Inverted text color on hover.
+          },
+        }}
+        onClick={onClick}
+      >
+        Submit and Join Waitlist
+      </Button>
+    </Box>
+  );
+};
 
 const WaitlistPage = () => {
   // State to keep track of the selected user type.
@@ -43,6 +289,12 @@ const WaitlistPage = () => {
       setReviews([{ teacher: '', review: '' }, { teacher: '', review: '' }, { teacher: '', review: '' }]);
     }
   }, [userType]);
+
+  // State to manage the error message.
+  const [error, setError] = useState('');
+
+  // Router hook to navigate to the waitlist page.
+  const router = useRouter()
 
   // Handler function to update the selected user type and reset the state accordingly.
   const handleTabChange = (event, newValue) => {
@@ -77,54 +329,101 @@ const WaitlistPage = () => {
 
   // Function to validate the review entries.
   // Ensures at least three reviews are provided, all fields are filled, and no duplicate teachers.
-  const validateReviews = () => {
-    const uniqueTeachers = new Set(reviews.map(r => r.teacher)); // Extract unique teacher names from reviews.
-    return (
-      reviews.length >= 3 && // Check if there are at least three reviews.
-      reviews.every(r => r.teacher && r.review) && // Check if all review fields are filled.
-      uniqueTeachers.size === reviews.length // Check if there are no duplicate teacher names.
+  // Function to validate the form entries.
+const validateForm = () => {
+  if (!email) {
+    setError('Please provide a valid email address.');
+    return false;
+  }
+
+  // Ensure the email is a Gmail address
+  const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+  if (!gmailRegex.test(email)) {
+    setError('Please provide a Gmail address.');
+    return false;
+  }
+
+  // Additional validation only for IBA Students (userType === 0)
+  if (userType === 0) {
+    // Filter reviews with both teacher and review fields filled
+    const uniqueReviews = Array.from(
+      new Set(
+        reviews
+          .filter((review) => review.teacher && review.review)
+          .map((review) => review.teacher)
+      )
     );
-  };
+
+    // Ensure there are at least 3 unique reviews
+    if (uniqueReviews.length < 3) {
+      setError('Please provide unique reviews for at least 3 different teachers.');
+      return false;
+    }
+  }
+
+  // Clear any previous errors
+  setError('');
+  return true;
+};
 
   // Handler function for form submission.
-  const handleSubmit = () => {
-    if (validateReviews() || userType !== 0) { // Validate reviews if user type is IBA Student.
-      console.log('User Type:', userType); // Log the user type.
-      console.log('Email:', email); // Log the email address.
-      console.log('Reviews:', reviews); // Log the review details.
-    } else {
-      alert('Please ensure that you have filled all fields, provided at least three reviews, and that no teachers are duplicated.');
+  const handleSubmit = async () => {
+    if (!validateForm()) return;
+  
+    try {
+      // Determine the Firestore document reference based on the user type
+      let documentRef;
+      if (userType === 0 || userType === 1) {
+        documentRef = doc(firestore, 'waitlist', 'iba-students');
+      } else if (userType === 2) {
+        documentRef = doc(firestore, 'waitlist', 'non-iba');
+      }
+  
+      // Save the email to the appropriate document
+      if (userType !== 0) {
+        await setDoc(documentRef, 
+          { 
+            emails: arrayUnion(email)
+          }, 
+          { merge: true }
+        );
+      } else if (userType === 0) {
+        // Save email and teacher reviews for IBA students
+        await setDoc(documentRef, 
+          { 
+            emails: arrayUnion(email)
+          }, 
+          { merge: true }
+        );
+  
+        // Save teacher reviews
+        for (let review of reviews) {
+          const teacherId = review.teacher.replace(/[.\s]/g, '').toLowerCase();
+          const teacherRef = doc(firestore, 'teachers', teacherId);
+  
+          const teacherDoc = await getDoc(teacherRef);
+  
+          if (teacherDoc.exists()) {
+            await updateDoc(teacherRef, {
+              reviews: arrayUnion(review.review)
+            });
+          } else {
+            await setDoc(teacherRef, {
+              reviews: [review.review]
+            });
+          }
+        }
+      }
+  
+      console.log('Feedback submitted successfully!');
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      setError('Failed to submit feedback. Please try again later.');
     }
+  
+    router.push('/post-submission');
   };
-
-  // Component for the submit button with custom styling.
-  const Submit = ({ onClick }) => {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: '#800000', // Maroon background color.
-            color: '#ffffff', // White text color.
-            textTransform: 'none',
-            '&:hover': {
-              backgroundColor: '#ffffff', // Inverted background color on hover.
-              color: '#800000', // Inverted text color on hover.
-            },
-          }}
-          onClick={onClick}
-        >
-          Submit and Join Waitlist
-        </Button>
-      </Box>
-    );
-  };
+  
 
 
 
@@ -261,16 +560,25 @@ const WaitlistPage = () => {
                               },
                             }}
                           >
-                            <InputLabel>Teacher</InputLabel>
-                            <Select
-                              value={review.teacher}
-                              onChange={(e) => handleReviewChange(index, 'teacher', e.target.value)}
-                            >
-                              <MenuItem value="Teacher A">Teacher A</MenuItem>
-                              <MenuItem value="Teacher B">Teacher B</MenuItem>
-                              <MenuItem value="Teacher C">Teacher C</MenuItem>
-                              <MenuItem value="Teacher D">Teacher D</MenuItem>
-                            </Select>
+                            <Autocomplete
+                              options={teachersList} // Dynamically populated options
+                              value={review.teacher || ''} // Ensure it works even if the teacher is not yet selected
+                              onChange={(e, newValue) => handleReviewChange(index, 'teacher', newValue)}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  label="Teacher"
+                                  variant="outlined"
+                                  InputLabelProps={{
+                                    style: { color: 'maroon' }, // Maroon label color
+                                  }}
+                                  InputProps={{
+                                    ...params.InputProps,
+                                    endAdornment: params.InputProps.endAdornment,
+                                  }}
+                                />
+                              )}
+                            />
                           </FormControl>
                           <TextField
                             label="Review"
@@ -317,6 +625,15 @@ const WaitlistPage = () => {
                       <RemoveIcon /> {/* Icon to remove a review box */}
                     </IconButton>
                   </Box>
+
+                  {/* Error messages */}
+                  {error && (
+                    <Grid item xs={12} container justifyContent="center" textAlign="center" marginBottom={2}>
+                      <Typography variant="body1" color="error">
+                        {error}
+                      </Typography>
+                    </Grid>
+                  )}
 
                   {/* Submit button */}
                   <Submit onClick={handleSubmit} />
