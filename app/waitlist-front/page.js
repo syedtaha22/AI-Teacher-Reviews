@@ -126,6 +126,8 @@ const WaitlistPage = () => {
     );
   };
 
+
+
   return (
     <Box
       sx={{
@@ -137,6 +139,7 @@ const WaitlistPage = () => {
         backgroundPosition: 'center',
       }}
     >
+
       <Container maxWidth="md" sx={{ marginTop: '20px' }}>
         <Card
           sx={{
@@ -150,7 +153,6 @@ const WaitlistPage = () => {
             value={userType}
             onChange={handleTabChange}
             variant="fullWidth"
-
 
             sx={{
               '& .MuiTabs-indicator': {

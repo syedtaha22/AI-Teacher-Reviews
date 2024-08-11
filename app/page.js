@@ -2,6 +2,7 @@
 
 import LandingPage from './landing/page';
 import Waitlist from './waitlist-front/page';
+import AboutPage from './about/page';
 import { usePathname } from 'next/navigation';
 
 const Page = () => {
@@ -11,6 +12,9 @@ const Page = () => {
         return <Waitlist />;
     }
 
+    if (pathname === '/about') {
+        return <Waitlist />;
+    }
 
     return <LandingPage />;
 };

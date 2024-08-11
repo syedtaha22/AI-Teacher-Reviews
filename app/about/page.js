@@ -1,11 +1,21 @@
+'use client';
+
 // Import necessary modules and components from MUI and React
 import React from 'react';
-import { Container, Typography, Box } from '@mui/material';
-import { ThemeProvider } from '@mui/material/styles';
+import { Container, Typography, Box, IconButton } from '@mui/material';
 import Image from 'next/image';
+import { ArrowBack, ArrowBackIos } from '@mui/icons-material';
+import { useRouter } from 'next/navigation';
 
 // AboutPage Component
 const AboutPage = () => {
+
+  const router = useRouter(); // Initialize the router
+
+  const handleBack = () => {
+    router.push('/')
+  }
+
   return (
     <Box
       sx={{
@@ -28,6 +38,7 @@ const AboutPage = () => {
           height: '100%',
           zIndex: -1, // Send background behind content
           overflow: 'hidden', // Hide overflow for background image
+
         }}
       >
         <Image
@@ -37,8 +48,28 @@ const AboutPage = () => {
           objectFit="cover" // Ensure the image covers the container without distortion
           quality={100} // Use the highest quality
           priority // Load image with high priority
+          style={{
+            filter: 'blur(10px)',
+            transform: 'scale(1.05)' // Slightly increase the image size to prevent vignette
+
+          }} // Apply blur effect to the image
         />
       </Box>
+
+      <IconButton
+        onClick={handleBack} // Navigate to home page
+        sx={{
+          position: 'absolute', // Position the button absolutely within the viewport
+          top: 20,
+          left: 30,
+          color: 'white',
+          '&:hover': {
+            color: 'maroon',
+          },
+        }}
+      >
+        <ArrowBack />
+      </IconButton>
 
       {/* Main content card */}
       <Box
@@ -54,39 +85,38 @@ const AboutPage = () => {
       >
         <Container maxWidth="md">
           <Typography
-            variant="h3"
+            variant="h4" // Changed from h3 to h4 for smaller heading
             gutterBottom
             style={{
-              marginBottom: '40px',
+              marginBottom: '20px', // Reduced margin for better spacing
               color: 'white',
               backgroundColor: '#700f1a',
-              fontFamily: 'Times New Roman',
               borderRadius: '20px',
               padding: '10px', // Added padding for better appearance
             }}
           >
-             Teachers Review by AI
+            Teacher Review with AI
           </Typography>
 
           {/* What We Offer Section */}
           <Box mb={4}>
-            <Typography variant="h4" gutterBottom sx={{ color: 'white' }}>
+            <Typography variant="h5" gutterBottom sx={{ color: 'white' }}> {/* Changed from h4 to h5 */}
               What We Offer
             </Typography>
-            <Typography variant="body1" gutterBottom sx={{ color: 'white' }}>
+            <Typography variant="body2" gutterBottom sx={{ color: 'white' }}> {/* Changed from body1 to body2 */}
               We provide students with AI-powered teacher reviews. This
               system enables students to gain insights into any IBA teacher,
-              helping them make informed decisions about  choosing educators that align with their learning
+              helping them make informed decisions about choosing educators that align with their learning
               preferences.
             </Typography>
           </Box>
 
           {/* Our Mission Section */}
           <Box>
-            <Typography variant="h4" gutterBottom sx={{ color: 'white' }}>
+            <Typography variant="h5" gutterBottom sx={{ color: 'white' }}> {/* Changed from h4 to h5 */}
               Our Mission
             </Typography>
-            <Typography variant="body1" gutterBottom sx={{ color: 'white' }}>
+            <Typography variant="body2" gutterBottom sx={{ color: 'white' }}> {/* Changed from body1 to body2 */}
               Our mission is to expand this AI-powered review system beyond IBA,
               offering this service to other universities. By doing so, we aim
               to enhance the educational experience for students everywhere,

@@ -25,6 +25,10 @@ const LandingPage = () => {
     router.push('/waitlist-front');
   };
 
+  const handleAbout = () => {
+    router.push('/about');
+  };
+
 
   return (
     <Box
@@ -77,13 +81,13 @@ const LandingPage = () => {
         }}
       >
         {/* Header title */}
-        <Link
-          href="#"
+        <Button
+
           sx={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            textDecoration: 'none', // Remove underline from link
+            textTransform: 'none', // Remove transformation from link
             color: themeColors.foreground, // Set text color
             fontFamily: 'Manrope, sans-serif', // Font family for text
           }}
@@ -91,28 +95,25 @@ const LandingPage = () => {
           <Typography variant="h6" sx={{ fontWeight: 700 }}>
             AI-Instructor Review
           </Typography>
-        </Link>
+        </Button>
         {/* Navigation links */}
         <Box
           component="nav"
           sx={{ display: 'flex', gap: { xs: 1, sm: 2 } }} // Set gap between navigation links
         >
-          <Link
-            href="#"
+          <Button
+            onClick={handleAbout}
             sx={{
-              textDecoration: 'none', // Remove underline from link
+              textTransform: 'none', // Remove transformation from link
               color: themeColors.foreground, // Set text color
-              fontFamily: 'Manrope, sans-serif', // Font family for text
-              fontWeight: 500, // Font weight for navigation links
-              fontSize: '0.875rem', // Font size for navigation links
             }}
           >
             About
-          </Link>
+          </Button>
         </Box>
-      </Box>
+      </Box >
       {/* Main content section */}
-      <Box
+      < Box
         sx={{
           flex: 1,
           display: 'flex',
@@ -126,7 +127,7 @@ const LandingPage = () => {
         }}
       >
         {/* Content container */}
-        <Box
+        < Box
           sx={{
             position: 'relative',
             bgcolor: 'rgba(0, 0, 0, 0.4)', // Semi-transparent background color
@@ -141,7 +142,7 @@ const LandingPage = () => {
           }}
         >
           {/* Main heading */}
-          <Typography
+          < Typography
             variant="h4"
             sx={{
               color: themeColors.foreground, // Set text color
@@ -151,10 +152,10 @@ const LandingPage = () => {
               lineHeight: 1.2, // Line height for heading
             }}
           >
-            Discover the Best IBA Teachers with AI-Powered Reviews
-          </Typography>
+            Discover the Best IBA Teachers with AI - Powered Reviews
+          </Typography >
           {/* Subheading */}
-          <Typography
+          < Typography
             variant="body1"
             sx={{
               color: themeColors.foreground, // Set text color
@@ -163,11 +164,11 @@ const LandingPage = () => {
               mt: 2, // Margin-top for spacing
             }}
           >
-            Our AI-driven platform provides personalized teacher recommendations and in-depth reviews to help
+            Our AI - driven platform provides personalized teacher recommendations and in -depth reviews to help
             IBA students find the perfect educator.
-          </Typography>
+          </Typography >
           {/* Button */}
-          <Box sx={{ mt: 2 }}>
+          < Box sx={{ mt: 2 }}>
             <Button
               variant="contained"
               onClick={handleWaitlist}
@@ -186,10 +187,10 @@ const LandingPage = () => {
             >
               Join Waitlist
             </Button>
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+          </Box >
+        </Box >
+      </Box >
+    </Box >
   );
 }
 
