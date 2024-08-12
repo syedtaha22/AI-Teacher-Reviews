@@ -506,7 +506,7 @@ const WaitlistPage = () => {
                     Welcome to IBA!
                   </Typography>
                   <Typography variant="body1" sx={{ marginBottom: 2 }}>
-                    Our platform provides insights into the teaching methods, grading policies, and overall experiences with IBA instructors. As a new student, you’ll benefit from honest reviews that can help you choose your courses wisely.
+                    Our platform provides insights into the teaching methods, grading policies, and overall experiences with IBA instructors. As a new student, you&apos;ll benefit from honest reviews that can help you choose your courses wisely.
                   </Typography>
                   <Typography variant="body1" sx={{ marginBottom: 0 }}>
                     Benefits:

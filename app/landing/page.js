@@ -62,7 +62,7 @@ const LandingPage = () => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        minHeight: '100vh',
+        height: '100vh',
         bgcolor: 'transparent',
         overflow: 'hidden',
         position: 'relative',
