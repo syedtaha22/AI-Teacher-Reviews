@@ -27,222 +27,8 @@ import { doc, setDoc, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
 import { firestore } from '@/firebase';
 import { useRouter } from 'next/navigation';
 
-// list of all teachers
-const teachersList = ["Abdul Basit",
-  "Abdullah M Yousuf",
-  "Aadil Nakhoda",
-  "Abdul Basit Shaikh",
-  "Abdul Kaium Masud",
-  "Abdul Majid",
-  "Abdul Wahab Suri",
-  "Adnan Haider",
-  "Ahmad Azhar",
-  "Aitzaz Ahsan",
-  "Ali Gibran Siddiqui",
-  "Amana Raquib",
-  "Amer Awan",
-  "Amer Iqbal Awan",
-  "Amir Bashir",
-  "Amir Hamza",
-  "Amir Jehan Khan",
-  "Arslan Waheed",
-  "Asad Bilal",
-  "Ashar Saleem",
-  "Asim Shabir",
-  "Ateeb Akhtar",
-  "Azam Ali",
-  "Azeem Hassan",
-  "Azima Khan",
-  "Babar Ahmed Qureshi",
-  "Bilal Munshi",
-  "Danish Ali",
-  "Danish Iqbal Godil",
-  "Engr Irfan Nabi",
-  "Faisal Nazir",
-  "Faisla Iradat",
-  "Faiz ur Rehman",
-  "Farah Naz Baig",
-  "Farah Yasmeen",
-  "Faraz Hyder",
-  "Hafsa Ather Jafri",
-  "Hassan Mahmood",
-  "Hatim Fassi",
-  "Heman Das Lohano",
-  "Hisham Bin Zubair",
-  "Huma Amir",
-  "Huma Sodher",
-  "Humera Naz",
-  "Ilfan Oh",
-  "Imran Khan",
-  "Imran Rauf",
-  "Irum Saba",
-  "Ismat Abbas",
-  "Jaffar Ahmed",
-  "Javed Iqbal",
-  "Jawwad Farid",
-  "Junaid Alam",
-  "Junaid Memon",
-  "Khadija Bari",
-  "Laila Farooq",
-  "Lubna Naz",
-  "Mohsin Patel",
-  "Mohsin Sadaqat",
-  "Mohsin Zahid Khawaja",
-  "Moiz Hasan",
-  "Moiz Khan",
-  "Mudassir Uddin",
-  "Muhammad Ayaz",
-  "Muhammad Imtiaz",
-  "Muhammad Nasir",
-  "Muhammad Shafique",
-  "Muhammad Sheraz",
-  "Muhammad Yousuf Tufail",
-  "Mujeeb u Rehman Bhayo",
-  "Nadya Chishty Mujahid",
-  "Nadya Qamar Chishty",
-  "Nasir Afghan",
-  "Nasir Touheed",
-  "Nauman J Amin",
-  "Nausheen Anwar",
-  "Nausheen Wasi",
-  "Naveed Ahmad",
-  "Nazish Kanwal",
-  "Nida Aslam Khan",
-  "Noureen Khan",
-  "Qazi Masood",
-  "Sahar Arshad",
-  "Sahar Awan",
-  "Saima Saif",
-  "Sajjad Ahmed",
-  "Sajjad Haider",
-  "Salman Khalid",
-  "Salman Zaffar",
-  "Sami Siddiqui",
-  "Saqib Sharif",
-  "Saqib ur Rehman",
-  "Sara Khan",
-  "Shabana Nisar",
-  "Shahid Ashraf",
-  "Shahid Hussain",
-  "Shahid Mir",
-  "Shahid Qureshi",
-  "Shahid Zaki",
-  "Shameel Khan",
-  "Sharjeel Hasnie",
-  "Shoaib Jamal",
-  "Shumaila",
-  "Syed Ali raza",
-  "Syed Ali Raza Naqvi",
-  "Syed Asim Ali",
-  "Syed Inayat Ullah",
-  "Syed Tauqeer Ahmed Hashmi",
-  "Tahir Syed",
-  "Tarik Yildirim",
-  "Tariq Mahmood",
-  "Tehzeeb Amir",
-  "Ubedullah Khoso",
-  "Umar Shahzad",
-  "Usama Ehsan",
-  "Usman Nazir",
-  "Wajid Rizvi",
-  "Wali Ullah",
-  "Yasir Kundi",
-  "Zaheer Ali",
-  "Zeeshan Atiq",
-  "Zeeshan Ullah",
-  "Zulfiqar",
-  "Francisco Merello",
-  "Graduate Department",
-  "Kashif Rashid",
-  "Leroy Johns",
-  "Mansoora Amini",
-  "Abdul Hafeez",
-  "Abu Tahir Siddique",
-  "Abu Tahir Siddiqui",
-  "Adnan Ahmad",
-  "Ahmed Akhtar",
-  "Ahmed Raza",
-  "Ali Asghar Khurshid",
-  "Ali Bolani",
-  "Amir Khan",
-  "Ammar Habib",
-  "Aniq Hashmi",
-  "Arif Irfanullah",
-  "Asad Sajid",
-  "Ayaz Shaikh",
-  "Azfer Naseem",
-  "Babur Khan Suri",
-  "Behraj Khan",
-  "Bilal Hayat But",
-  "Ehsan Badar",
-  "Farhan A Siddiqui",
-  "Farhan Shaukat",
-  "Farhan ul Haq Usmani",
-  "Faseeh Ahmed",
-  "Furqan Essani",
-  "Ghias ul Hassan Khan",
-  "Haroon Tabraze",
-  "Hassaan Khalid",
-  "Ijaz Ali",
-  "Imran Javed",
-  "Imran Shaheen",
-  "Irfan Khan",
-  "Irfan Muhammad",
-  "Jafar Raza Rizvi",
-  "Kamil Shahbazker",
-  "Kamil Yousuf",
-  "Khusrow Uzair",
-  "Leon Menezes",
-  "M Abdullah Yousuf",
-  "M Zain Uddin",
-  "Maqsood Alam",
-  "Mohammad Sohaib Saleem",
-  "Muhammad Naeem",
-  "Muhammad Najam Uddin",
-  "Muhammad Shahid Waheed",
-  "Muhammad Umer Saeed",
-  "Muzamil Patel",
-  "Muzammil Patel",
-  "Najmul Hassan",
-  "Naveed Haider Bukhari",
-  "Naveed Rabbani",
-  "Rahat Aziz",
-  "Rao M Noman",
-  "Saad Usman",
-  "Saher Iqbal",
-  "Samar Jamil",
-  "Saqib Ahmed",
-  "Shahzad Ahmed",
-  "Shahzeb Ahmed Hashim",
-  "Sheikh Muhammad Irfan",
-  "Syed Muhammad Ali Bukhari",
-  "Ubaid-ur-Rehman",
-  "Usman Ali",
-  "Vishal Khemani",
-  "Waseem Arain",
-  "Yousuf Saudagar",
-  "Zeeshan Bhayani",
-  "Zenab Tariq",
-  "Zohaib Aziz",
-  "Zulfiqar Khan",
-  "Palwashay Sethi",
-  "Sobia Akber",
-  "Muhammad Asif Jaffer",
-  "Muniba Abdullah",
-  "Nadeem Akhtar",
-  "Akhter Raza Syed",
-  "Syed Ahsan Kamal",
-  "Syed Akbar Ali",
-  "Syed Ali Ahmed",
-  "Syed Atif Murtaza Qaiser",
-  "Syed Farid Iqbal",
-  "Syed Irfan Ahmed",
-  "Syed Mujahid Ali",
-  "Syed Shujaat Hussain",
-  "Tehsen Mazhar Valjee"];
-
 // Component for the submit button with custom styling.
-const Submit = ({ onClick }) => {
+const Submit = ({ onClick, isSubmitting }) => {
   return (
     <Box
       sx={{
@@ -264,7 +50,7 @@ const Submit = ({ onClick }) => {
         }}
         onClick={onClick}
       >
-        Submit and Join Waitlist
+        {isSubmitting ? 'Submitting...' : 'Submit and Join Waitlist'}
       </Button>
     </Box>
   );
@@ -281,6 +67,11 @@ const WaitlistPage = () => {
   // State to manage the list of review boxes for IBA Students.
   // Each review box has a teacher and review field.
   const [reviews, setReviews] = useState([{ teacher: '', review: '' }, { teacher: '', review: '' }, { teacher: '', review: '' }]);
+
+
+  // State to see if form is being submitted
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   // Effect hook to reset the reviews when the user type changes.
   useEffect(() => {
@@ -380,6 +171,8 @@ const WaitlistPage = () => {
   const handleSubmit = async () => {
     if (!validateForm()) return;
 
+    setIsSubmitting(true);
+
     try {
       // Determine the Firestore document reference based on the user type
       let documentRef;
@@ -431,8 +224,25 @@ const WaitlistPage = () => {
       setError('Failed to submit feedback. Please try again later.');
     }
 
+    setIsSubmitting(false)
     router.push('/post-submission');
+
   };
+
+  const [teachersList, setTeachersList] = useState([]);
+
+  useEffect(() => {
+    // Fetch the JSON file from the public directory
+    fetch('/teachers.json')
+      .then(response => response.json())
+      .then(data => {
+        // Set the teachersList state with the fetched data
+        setTeachersList(data);
+      })
+      .catch(error => {
+        console.error('Error fetching teachers list:', error);
+      });
+  }, []);
 
 
 
@@ -584,7 +394,7 @@ const WaitlistPage = () => {
                           >
                             <Autocomplete
                               options={teachersList} // Dynamically populated options
-                              value={review.teacher || ''} // Ensure it works even if the teacher is not yet selected
+                              value={review.teacher || null} // Ensure it works even if the teacher is not yet selected
                               onChange={(e, newValue) => handleReviewChange(index, 'teacher', newValue)}
                               renderInput={(params) => (
                                 <TextField
@@ -658,7 +468,7 @@ const WaitlistPage = () => {
                   )}
 
                   {/* Submit button */}
-                  <Submit onClick={handleSubmit} />
+                  <Submit onClick={handleSubmit} isSubmitting={isSubmitting} />
                 </CardContent>
               </Card>
             )}
@@ -725,7 +535,7 @@ const WaitlistPage = () => {
 
 
                   {/* Submit button */}
-                  <Submit onClick={handleSubmit} />
+                  <Submit onClick={handleSubmit} isSubmitting={isSubmitting} />
                 </CardContent>
               </Card>
             )}
@@ -776,7 +586,7 @@ const WaitlistPage = () => {
 
 
                   {/* Submit button */}
-                  <Submit onClick={handleSubmit} />
+                  <Submit onClick={handleSubmit} isSubmitting={isSubmitting} />
                 </CardContent>
               </Card>
             )}
