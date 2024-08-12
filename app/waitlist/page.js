@@ -554,7 +554,7 @@ const WaitlistPage = () => {
                     <ListItem sx={{ display: 'list-item', marginBottom: '-15px' }}>How is the teacher in terms of workload</ListItem>
                     <ListItem sx={{ display: 'list-item', marginBottom: '-15px' }}>How is the teacher in terms of grading</ListItem>
                     <ListItem sx={{ display: 'list-item', marginBottom: '5px' }}>What grades you received</ListItem>
-                    Remmber, The more detailed the review, the better the AI can help you find your teacher!!
+                    Remember, The more detailed the review, the better the AI can help you find your teacher!!
                   </List>
 
                   <Grid container spacing={2}>
