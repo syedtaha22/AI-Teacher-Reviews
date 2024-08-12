@@ -396,6 +396,12 @@ const WaitlistPage = () => {
                               options={teachersList} // Dynamically populated options
                               value={review.teacher || null} // Ensure it works even if the teacher is not yet selected
                               onChange={(e, newValue) => handleReviewChange(index, 'teacher', newValue)}
+                              filterOptions={(options, { inputValue }) => {
+                                const filtered = options.filter((option) =>
+                                  option.toLowerCase().includes(inputValue.toLowerCase())
+                                );
+                                return filtered;
+                              }}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
