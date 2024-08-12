@@ -2,7 +2,6 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Analytics } from '@vercel/analytics/react'; // Import Vercel Analytics
 
-
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "700"], // Specify the weights you want to use
