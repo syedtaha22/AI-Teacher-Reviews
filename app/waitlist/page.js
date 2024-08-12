@@ -358,7 +358,7 @@ const WaitlistPage = () => {
                       marginBottom: 2
                     }}
                   >
-                    Here's what you should cover in your review:
+                    Here&apos;s what you should cover in your review:
                     <ListItem sx={{ display: 'list-item', marginBottom: '-15px' }}>Which course you took from the teacher</ListItem>
                     <ListItem sx={{ display: 'list-item', marginBottom: '-15px' }}>How is the teacher in terms of teaching</ListItem>
                     <ListItem sx={{ display: 'list-item', marginBottom: '-15px' }}>How is the teacher in terms of workload</ListItem>
