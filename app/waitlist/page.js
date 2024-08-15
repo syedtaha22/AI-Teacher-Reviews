@@ -127,16 +127,27 @@ const WaitlistPage = () => {
       setError('Please provide a valid email address.');
       return false;
     }
-
-    // Ensure the email is a Gmail address
-    const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-    if (!gmailRegex.test(email)) {
-      setError('Please provide a Gmail address.');
-      return false;
+  
+    if (userType === 1 || userType === 2) {
+      // Ensure the email is a Gmail address
+      const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+      if (!gmailRegex.test(email)) {
+        setError('Please provide a Gmail address.');
+        return false;
+      }
     }
-
+  
     // Additional validation only for IBA Students (userType === 0)
     if (userType === 0) {
+      // Regex to match the IBA email format
+      const ibaEmailRegex = /^[a-z]+\.[a-z]+\.\d+@khi\.iba\.edu\.pk$/;
+  
+      // Ensure the email matches the IBA email format
+      if (!ibaEmailRegex.test(email)) {
+        setError('Please provide a valid IBA email address.');
+        return false;
+      }
+  
       // Check if any review field is empty
       for (let i = 0; i < reviews.length; i++) {
         const review = reviews[i];
@@ -145,7 +156,7 @@ const WaitlistPage = () => {
           return false;
         }
       }
-
+  
       // Filter reviews with both teacher and review fields filled
       const uniqueReviews = Array.from(
         new Set(
@@ -154,18 +165,18 @@ const WaitlistPage = () => {
             .map((review) => review.teacher)
         )
       );
-
+  
       // Ensure there are at least 3 unique reviews
       if (uniqueReviews.length < 3) {
         setError('Please provide unique reviews for at least 3 different teachers.');
         return false;
       }
     }
-
+  
     // Clear any previous errors
     setError('');
     return true;
-  };
+  };  
 
   // Handler function for form submission.
   const handleSubmit = async () => {
