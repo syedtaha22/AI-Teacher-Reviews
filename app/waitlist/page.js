@@ -170,9 +170,9 @@ const WaitlistPage = () => {
   // Handler function for form submission.
   const handleSubmit = async () => {
     if (!validateForm()) return;
-
+  
     setIsSubmitting(true);
-
+  
     try {
       // Determine the Firestore document reference based on the user type
       let documentRef;
@@ -181,31 +181,18 @@ const WaitlistPage = () => {
       } else if (userType === 2) {
         documentRef = doc(firestore, 'waitlist', 'non-iba');
       }
-
+  
       // Save the email to the appropriate document
-      if (userType !== 0) {
-        await setDoc(documentRef,
-          {
-            emails: arrayUnion(email)
-          },
-          { merge: true }
-        );
-      } else if (userType === 0) {
-        // Save email and teacher reviews for IBA students
-        await setDoc(documentRef,
-          {
-            emails: arrayUnion(email)
-          },
-          { merge: true }
-        );
-
-        // Save teacher reviews
+      await setDoc(documentRef, { emails: arrayUnion(email) }, { merge: true });
+  
+      if (userType === 0) {
+        // Save teacher reviews for IBA students
         for (let review of reviews) {
           const teacherId = review.teacher.replace(/[.\s]/g, '').toLowerCase();
           const teacherRef = doc(firestore, 'teachers', teacherId);
-
+  
           const teacherDoc = await getDoc(teacherRef);
-
+  
           if (teacherDoc.exists()) {
             await updateDoc(teacherRef, {
               reviews: arrayUnion(review.review)
@@ -217,17 +204,17 @@ const WaitlistPage = () => {
           }
         }
       }
-
+  
       console.log('Feedback submitted successfully!');
+      router.push('/post-submission');
     } catch (error) {
       console.error('Error submitting feedback:', error);
       setError('Failed to submit feedback. Please try again later.');
     }
-
-    setIsSubmitting(false)
-    router.push('/post-submission');
-
+  
+    setIsSubmitting(false);
   };
+  
 
   const [teachersList, setTeachersList] = useState([]);
 
