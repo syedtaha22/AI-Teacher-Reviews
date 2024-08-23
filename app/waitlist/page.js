@@ -545,6 +545,7 @@ const WaitlistPage = () => {
                 </CardContent>
               </Card>
             )}
+
             {userType === 2 && (
               <Card
                 sx={{
