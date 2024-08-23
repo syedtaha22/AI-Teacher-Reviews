@@ -5,6 +5,8 @@ import Waitlist from './waitlist/page';
 import AboutPage from './about/page';
 import ThankYouPage from './post-submission/page';
 import { usePathname } from 'next/navigation';
+import ChatPage from './chat/page';
+import ReviewPage from './ReviewPage/page';
 
 const Page = () => {
     const pathname = usePathname();
@@ -21,7 +23,7 @@ const Page = () => {
         return <ThankYouPage />;
     }
 
-    return <LandingPage />;
+    return <ReviewPage />;
 };
 
 export default Page;
