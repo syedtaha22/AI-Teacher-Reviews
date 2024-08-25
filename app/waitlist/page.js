@@ -66,7 +66,7 @@ const WaitlistPage = () => {
 
   // State to manage the list of review boxes for IBA Students.
   // Each review box has a teacher and review field.
-  const [reviews, setReviews] = useState([{ teacher: '', review: '' }, { teacher: '', review: '' }, { teacher: '', review: '' }]);
+  const [reviews, setReviews] = useState([{ teacher: '', review: '' }, { teacher: '', review: '' }]);
 
 
   // State to see if form is being submitted
@@ -76,8 +76,8 @@ const WaitlistPage = () => {
   // Effect hook to reset the reviews when the user type changes.
   useEffect(() => {
     if (userType === 0) {
-      // For IBA Students, initialize with three empty review boxes.
-      setReviews([{ teacher: '', review: '' }, { teacher: '', review: '' }, { teacher: '', review: '' }]);
+      // For IBA Students, initialize with Two empty review boxes.
+      setReviews([{ teacher: '', review: '' }, { teacher: '', review: '' }]);
     }
   }, [userType]);
 
@@ -93,7 +93,7 @@ const WaitlistPage = () => {
     setEmail(''); // Clear the email input field.
     if (newValue === 0) {
       // If IBA Student is selected, initialize review boxes.
-      setReviews([{ teacher: '', review: '' }, { teacher: '', review: '' }, { teacher: '', review: '' }]);
+      setReviews([{ teacher: '', review: '' }, { teacher: '', review: '' }]);
     } else {
       // For other user types, clear review boxes.
       setReviews([]);
@@ -119,7 +119,7 @@ const WaitlistPage = () => {
   };
 
   // Function to validate the review entries.
-  // Ensures at least three reviews are provided, all fields are filled, and no duplicate teachers.
+  // Ensures at least Two reviews are provided, all fields are filled, and no duplicate teachers.
   // Function to validate the form entries.
   // Function to validate the form entries.
   const validateForm = () => {
@@ -166,9 +166,9 @@ const WaitlistPage = () => {
         )
       );
 
-      // Ensure there are at least 3 unique reviews
-      if (uniqueReviews.length < 3) {
-        setError('Please provide unique reviews for at least 3 different teachers.');
+      // Ensure there are at least 1 unique reviews
+      if (uniqueReviews.length < 2) {
+        setError('Please provide unique reviews for at least Two teachers.');
         return false;
       }
     }
@@ -355,7 +355,7 @@ const WaitlistPage = () => {
                       color: '#1e1e1e', // Dark text color.
                     }}
                   >
-                    Review at least three teachers to help populate the database.
+                    Review at least Two teachers to help populate the database.
                     <Typography>(All reviews are anonymous)</Typography>
                   </Typography>
                   <List
@@ -470,7 +470,7 @@ const WaitlistPage = () => {
                     <IconButton
                       onClick={() => removeReviewBox(reviews.length - 1)}
                       sx={{ marginLeft: 1 }}
-                      disabled={reviews.length <= 3} // Disable button if there are 3 or fewer review boxes.
+                      disabled={reviews.length <= 2} // Disable button if there are 2 or fewer review boxes.
                     >
                       <RemoveIcon /> {/* Icon to remove a review box */}
                     </IconButton>
