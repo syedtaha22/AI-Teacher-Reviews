@@ -5,6 +5,7 @@ import { TextField, Autocomplete, Box, Typography, Container, CircularProgress a
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "@/firebase";
 import Image from 'next/image';
+import withAuth from '../protectedRoute';
 
 // CircularProgressWithLabel component definition
 const CircularProgressWithLabel = (props) => {
@@ -276,4 +277,4 @@ const ReviewPage = () => {
     );
 };
 
-export default ReviewPage;
+export default withAuth(ReviewPage);

@@ -5,7 +5,7 @@ import Waitlist from './waitlist/page';
 import AboutPage from './about/page';
 import ThankYouPage from './post-submission/page';
 import { usePathname } from 'next/navigation';
-import ReviewPage from './ReviewPage/page';
+import ReviewPage from './review-page/page'
 import FeedbackForm from './feedback/page';
 
 const Page = () => {
@@ -23,11 +23,15 @@ const Page = () => {
         return <ThankYouPage />;
     }
 
+    if (pathname === '/review-page') {
+        return <ReviewPage />;
+    }
+
     if (pathname === '/feedback') {
         return <FeedbackForm />;
     }
 
-    return <ReviewPage />;
+    return <LandingPage />;
 };
 
 export default Page;
