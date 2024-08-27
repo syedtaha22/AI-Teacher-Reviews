@@ -172,7 +172,13 @@ const FeedbackPage = () => {
                                 }}
                             />
                             {/* Centering the button */}
-                            <Box display="flex" justifyContent="center" marginY={2} marginBottom='0px'>
+                            <Box
+                                display="flex"
+                                flexDirection='column'
+                                justifyContent="center"
+                                alignItems='center'
+                                marginY={2}
+                                marginBottom='0px'>
                                 <Button
                                     type="submit"
                                     variant="contained"
@@ -188,9 +194,9 @@ const FeedbackPage = () => {
                                 >
                                     Submit Feedback
                                 </Button>
+                                {status && <Typography mt={2} color='maroon'>{status}</Typography>}
                             </Box>
                         </form>
-                        {status && <Typography mt={2} color='maroon'>{status}</Typography>}
                     </CardContent>
                 </Card>
             </Container>
