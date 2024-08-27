@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { TextField, Autocomplete, Box, Typography, Container, CircularProgress as MUIProgress } from '@mui/material';
+import { TextField, Autocomplete, Box, Typography, Container, CircularProgress as MUIProgress, AppBar, Button, Link } from '@mui/material';
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "@/firebase";
 import Image from 'next/image';
@@ -56,7 +56,6 @@ const CircularProgressWithLabel = (props) => {
     );
 };
 
-
 // ScoreChart component definition
 const ScoreChart = ({ score, maxScore, label }) => {
     const percentage = (score / maxScore) * 100;
@@ -70,7 +69,7 @@ const ScoreChart = ({ score, maxScore, label }) => {
 };
 
 // ReviewBox component definition
-const ReviewBox = ({ review, loading }) => {
+const ReviewBox = ({ review, reviewCount, loading }) => {
     if (loading) {
         return <MUIProgress
             sx={{
@@ -101,11 +100,13 @@ const ReviewBox = ({ review, loading }) => {
     return (
         <Box sx={{ padding: 2, border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f9f9f9', marginTop: 2 }}>
             <Typography variant="h6">{review[0].TeacherName}</Typography>
+            <Typography fontSize="12px" sx={{ marginBottom: 1 }}>Number of Reviews: {reviewCount}</Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
                 <ScoreChart score={review[0].leniency} maxScore={10} label="Leniency" />
                 <ScoreChart score={review[0].workload} maxScore={10} label="Workload" />
                 <ScoreChart score={review[0].difficulty} maxScore={10} label="Difficulty" />
                 <ScoreChart score={review[0].grading} maxScore={10} label="Grading" />
+                <ScoreChart score={review[0].learning} maxScore={10} label="Learning" />
                 <ScoreChart score={review[0].overall} maxScore={10} label="Overall" />
             </Box>
             <Typography variant="body1" sx={{ marginTop: 2, color: '#800000' }}><strong>Summary:</strong> </Typography>
@@ -120,6 +121,7 @@ const ReviewPage = () => {
     const [selectedTeacher, setSelectedTeacher] = useState("");
     const [review, setReview] = useState("");
     const [loading, setLoading] = useState(false);
+    const [reviewCount, setReviewCount] = useState(0); // New state variable for review count
 
     useEffect(() => {
         fetch("/teachers.json")
@@ -140,6 +142,8 @@ const ReviewPage = () => {
             const teacherRef = doc(firestore, "teachers", teacherKey);
             const teacherDoc = await getDoc(teacherRef);
             const reviews = teacherDoc.exists() ? teacherDoc.data().reviews || [] : [];
+
+            setReviewCount(reviews.length); // Set the review count
 
             const postData = {
                 teacher: teacherName,
@@ -175,54 +179,99 @@ const ReviewPage = () => {
             sx={{
                 position: 'relative',
                 minHeight: '100vh',
-                padding: '20px',
                 backgroundImage: `url('/reviewpage-blurred.jpg')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                backdropFilter: 'blur(20px)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
             }}
         >
-            <Container
+
+            <AppBar
+                position="sticky"
+                elevation={0}
                 sx={{
+                    backgroundColor: 'transparent', // Adds a slight background color for visibility
+                    // backdropFilter: 'blur(10px)', // Adds a backdrop blur effect for a frosted glass look
+                    alignItems: 'center',
+                    padding: '10px 20px', // Adds padding for better spacing
                     display: 'flex',
-                    flexDirection: 'column',
-                    maxWidth: { xs: '90%', sm: '80%', md: '60%', lg: '50%' }, // Adjusts width based on screen size
-                    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                    padding: 2,
-                    borderRadius: '8px',
-                    boxShadow: 3, // Adds a subtle shadow for depth
-                    marginTop: 4,
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
                 }}
             >
-                <Autocomplete
-                    options={teachers}
-                    value={selectedTeacher}
-                    onChange={handleTeacherChange}
-                    renderInput={(params) => (
-                        <TextField {...params}
-                            label="Select or Search for a Teacher"
-                            variant="outlined"
-                            fullWidth
-                            sx={{
-                                marginBottom: 2,
-                                '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-                                    borderColor: 'maroon',
-                                },
-                                '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                    borderColor: 'maroon',
-                                },
-                                '& .MuiInputLabel-root.Mui-focused': {
-                                    color: 'maroon',
-                                },
-                            }}
-                        />
-                    )}
-                />
-                <ReviewBox review={review} loading={loading} />
-            </Container>
+                <Typography
+                    sx={{
+                        color: '#800000',
+                        textDecoration: 'underline',
+                        textUnderlineOffset: '3px', // Adjust the thickness as needed
+                    }}
+                >
+                    This is a Beta
+                </Typography>
+                <Link
+                    href="/feedback"
+                    underline="none"
+                    sx={{
+                        color: '#fff',
+                        '&:hover': {
+                            color: '#800000', // Changes color on hover
+                        },
+                        fontWeight: 'bold',
+                    }}
+                >
+                    Feedback
+                </Link>
+            </AppBar>
+
+            <Box
+                sx={{
+                    position: 'relative',
+                    minHeight: '90vh',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+
+                <Container
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        maxWidth: { xs: '90%', sm: '80%', md: '60%', lg: '50%' }, // Adjusts width based on screen size
+                        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                        padding: 2,
+                        borderRadius: '8px',
+                        boxShadow: 3, // Adds a subtle shadow for depth
+                        marginTop: 4,
+                    }}
+                >
+                    <Autocomplete
+                        options={teachers}
+                        value={selectedTeacher}
+                        onChange={handleTeacherChange}
+                        renderInput={(params) => (
+                            <TextField {...params}
+                                label="Select or Search for a Teacher"
+                                variant="outlined"
+                                fullWidth
+                                sx={{
+                                    marginBottom: 2,
+                                    '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: 'maroon',
+                                    },
+                                    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: 'maroon',
+                                    },
+                                    '& .MuiInputLabel-root.Mui-focused': {
+                                        color: 'maroon',
+                                    },
+                                }}
+                            />
+                        )}
+                    />
+                    <ReviewBox review={review} reviewCount={reviewCount} loading={loading} />
+                </Container>
+            </Box>
         </Box>
     );
 };
