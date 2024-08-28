@@ -50,7 +50,7 @@ const CircularProgressWithLabel = (props) => {
                     component="div"
                     color="text.secondary"
                 >
-                    {`${Math.round(props.value)}%`}
+                    {`${props.value}%`}
                 </Typography>
             </Box>
         </Box>
@@ -108,7 +108,6 @@ const ReviewBox = ({ review, reviewCount, loading }) => {
                 <ScoreChart score={review[0].difficulty} maxScore={10} label="Difficulty" />
                 <ScoreChart score={review[0].grading} maxScore={10} label="Grading" />
                 <ScoreChart score={review[0].learning} maxScore={10} label="Learning" />
-                <ScoreChart score={review[0].overall} maxScore={10} label="Overall" />
             </Box>
             <Typography variant="body1" sx={{ marginTop: 2, color: '#800000' }}><strong>Summary:</strong> </Typography>
             <Typography>{review[0].summary}</Typography>
@@ -136,9 +135,6 @@ const ReviewPage = () => {
         const teacherKey = teacherName.replace(/[.\s]/g, "").toLowerCase();
 
         try {
-            const coursesResponse = await fetch("/teachers_courses.json");
-            const coursesData = await coursesResponse.json();
-            const teacherCourses = coursesData[teacherKey]?.courses_taught || [];
 
             const teacherRef = doc(firestore, "teachers", teacherKey);
             const teacherDoc = await getDoc(teacherRef);
@@ -149,7 +145,6 @@ const ReviewPage = () => {
             const postData = {
                 teacher: teacherName,
                 reviews: reviews,
-                courses_taught: teacherCourses,
             };
 
             const response = await fetch('/api/review', {
@@ -277,4 +272,4 @@ const ReviewPage = () => {
     );
 };
 
-export default withAuth(ReviewPage);
+export default ReviewPage;
