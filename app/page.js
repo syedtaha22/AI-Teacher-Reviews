@@ -7,6 +7,7 @@ import ThankYouPage from './post-submission/page';
 import { usePathname } from 'next/navigation';
 import ReviewPage from './review-page/page'
 import FeedbackForm from './feedback/page';
+import SignIn from './signin/page';
 
 const Page = () => {
     const pathname = usePathname();
@@ -29,6 +30,10 @@ const Page = () => {
 
     if (pathname === '/feedback') {
         return <FeedbackForm />;
+    }
+
+    if (pathname === '/signin') {
+        return <SignIn />;
     }
 
     return <LandingPage />;
