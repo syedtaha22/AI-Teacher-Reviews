@@ -65,7 +65,7 @@ const FeedbackPage = () => {
                 <Box display="flex" alignItems="center" mb={2}>
                     <Box display="flex" alignItems="center" mb={0}>
                         <Link
-                            href="/"
+                            href="/review-page"
                             underline="none"
                             sx={{
                                 display: 'flex',
