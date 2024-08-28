@@ -3,7 +3,7 @@ import { React, useState } from 'react';
 import { AppBar, Toolbar, Container, Box, Typography, TextField, Button, Link, FormControl, Card } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
+import { auth } from '@/firebase';
 
 /////////////////////////////////////// Main Component ////////////////////////////////////////
 
