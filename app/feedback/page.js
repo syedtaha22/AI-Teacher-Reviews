@@ -49,7 +49,7 @@ const FeedbackPage = () => {
         setName("");
         setEmail("");
         setRating(0);
-        serComments("");
+        setComments("");
     };
 
     return (
