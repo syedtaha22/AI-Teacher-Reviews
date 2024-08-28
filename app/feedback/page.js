@@ -45,6 +45,11 @@ const FeedbackPage = () => {
         } catch (error) {
             setStatus("Error sending feedback.");
         }
+
+        setName("");
+        setEmail("");
+        setRating(0);
+        serComments("");
     };
 
     return (
